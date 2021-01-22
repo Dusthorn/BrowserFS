@@ -160,7 +160,32 @@ module.exports = {
     Buffer: false
   }
 };
-```
+```  
+webpack-chain:  
+  
+```javascript
+chainWebpack: config => {
+    config.resolve.alias.set('fs', 'browserfs/dist/shims/fs.js');
+
+    config.resolve.alias.set('buffer', 'browserfs/dist/shims/buffer.js');
+
+    config.resolve.alias.set('path', 'browserfs/dist/shims/path.js');
+
+    config.resolve.alias.set('processGlobal', 'browserfs/dist/shims/process.js');
+
+    config.resolve.alias.set('bufferGlobal', 'browserfs/dist/shims/bufferGlobal.js');
+
+    config.resolve.alias.set('bfsGlobal', require.resolve('browserfs'));
+
+    config.module.noParse(/browserfs\.js/);
+
+    config
+      .plugin('env')
+      .use(require.resolve('webpack/lib/ProvidePlugin'), [{ BrowserFS: 'bfsGlobal', process: 'processGlobal', Buffer: 'bufferGlobal' }]);
+
+    config.node.set('process', false).set('Buffer', false);
+  }
+```  
 
 Browserify:
 
